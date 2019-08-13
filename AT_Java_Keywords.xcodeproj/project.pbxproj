@@ -28,6 +28,7 @@
 		A7365DDA22FF9A9F00042D9F /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7365DD922FF9A9F00042D9F /* ServiceError.swift */; };
 		A7365DDD22FF9BDA00042D9F /* QuizRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7365DDC22FF9BDA00042D9F /* QuizRequest.swift */; };
 		A7365DDF22FF9BFE00042D9F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7365DDE22FF9BFE00042D9F /* Request.swift */; };
+		A770ADA723024D8C00E7DD8E /* WordsViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A770ADA623024D8C00E7DD8E /* WordsViewConstants.swift */; };
 		A77EA84722FCF2DF00488CCF /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77EA84622FCF2DF00488CCF /* UITextField.swift */; };
 		A77EA84922FCF55E00488CCF /* WordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77EA84822FCF55E00488CCF /* WordsTableViewCell.swift */; };
 		A77EA84C22FCF61A00488CCF /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77EA84B22FCF61A00488CCF /* NSObject.swift */; };
@@ -80,6 +81,7 @@
 		A7365DD922FF9A9F00042D9F /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
 		A7365DDC22FF9BDA00042D9F /* QuizRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizRequest.swift; sourceTree = "<group>"; };
 		A7365DDE22FF9BFE00042D9F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		A770ADA623024D8C00E7DD8E /* WordsViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsViewConstants.swift; sourceTree = "<group>"; };
 		A77EA84622FCF2DF00488CCF /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		A77EA84822FCF55E00488CCF /* WordsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsTableViewCell.swift; sourceTree = "<group>"; };
 		A77EA84B22FCF61A00488CCF /* NSObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				A7163C3B23008CD800FBD823 /* WordsViewController+View.swift */,
+				A770ADA623024D8C00E7DD8E /* WordsViewConstants.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 				A77EA84922FCF55E00488CCF /* WordsTableViewCell.swift in Sources */,
 				A79D77A722FA503600B474AF /* WordsViewController.swift in Sources */,
 				A7188FD722FB9D1400AABCDB /* WordsViewControllerDelegate.swift in Sources */,
+				A770ADA723024D8C00E7DD8E /* WordsViewConstants.swift in Sources */,
 				A77EA85322FCF74800488CCF /* Question.swift in Sources */,
 				A7365DDF22FF9BFE00042D9F /* Request.swift in Sources */,
 				A7365DD622FF99C000042D9F /* QuizServiceProtocol.swift in Sources */,

@@ -13,6 +13,18 @@ class WordsViewController: UIViewController {
     
     // MARK: - UI
 
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     lazy var quizTitle: UILabel = {
         let label = UILabel()
         label.font = UIFont.words.largeTitle.font
@@ -87,6 +99,9 @@ class WordsViewController: UIViewController {
     var stateSubscriber: AnyCancellable?
     var wordsCountSubscriber: AnyCancellable?
     var gameResultSubscriber: AnyCancellable?
+    var errorSubscriber: AnyCancellable?
+    var keyboardHeight: CGFloat?
+    var bottomViewYPosition: CGFloat?
     
     // MARK: - Initializers
 
@@ -108,12 +123,21 @@ class WordsViewController: UIViewController {
         self.showSpinner(onView: self.view)
         bind()
         viewModel.viewWillAppear()
+        
     }
     
     override func viewDidLoad() {
         view.backgroundColor = UIColor.white
         super.viewDidLoad()
         setupToHideKeyboardOnTapOnView()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        view.endEditing(true)
+        self.keyboardHeight = nil
+        super.viewWillTransition(to: size, with: coordinator)
     }
     
     // MARK: - Methods
@@ -150,6 +174,14 @@ class WordsViewController: UIViewController {
             guard let result = result else { return }
             self.showMessage(title: result.title, message: result.message, action: result.action)
         }
+        
+        errorSubscriber = viewModel.$serviceError.receive(on: DispatchQueue.main).sink {
+            error in
+            if error != nil {
+                self.removeSpinner()
+                self.showErrorMessage(error: error?.message)
+            }
+        }
     }
     
     // MARK: - Private Methods
@@ -176,7 +208,13 @@ class WordsViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    private func showErrorMessage() { }
+    private func showErrorMessage(error: String?) {
+        let alert = UIAlertController(title: "Oops! There's an error.", message: error, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+            self.viewModel.fetchWords()
+        }))
+        self.present(alert, animated: true)
+    }
     
 }
 

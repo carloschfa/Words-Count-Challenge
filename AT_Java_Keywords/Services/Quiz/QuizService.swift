@@ -42,25 +42,15 @@ extension QuizService {
             
             do {
                 
-                guard var jsonString = String(data: data, encoding: .utf8) else {
-                    completion(.failure(.empty))
-                    return
-                }
-                
-                #warning("When this was developed The Arc Touch API was returning an invalid JSON, the following lines are just a workaround to make it work without a mock.")
-                if jsonString.contains("What are all the java keywords") {
-                    jsonString.insert(",", at: jsonString.index(jsonString.startIndex, offsetBy: 49))
-                }
-                
-                let question = try JSONDecoder().decode(Question.self, from: jsonString.data(using: .utf8)!)
+                let question = try JSONDecoder().decode(Question.self, from: data)
                 
                 #warning("A Delay was added to see the loading activity indicator, this should be removed after this test.")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                //DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     completion(.success(question))
-                }
+                //}
                 
             } catch let error {
-                print(error)
+                completion(.failure(.invalid(error.localizedDescription)))
             }
             
         }

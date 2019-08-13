@@ -13,8 +13,13 @@ class WordsViewModel {
     
     // MARK: - Constants and Enums
 
-    private struct Constants {
+    private struct WordsViewModelConstants {
         static let totalTime: Int = 299
+        static let initialTimeRemaining: String = "-:-"
+        static let initialWordsCount: String = "-/-"
+        static let zeroTimeRemaining: String = "00:00"
+        static let winnerMessage: (String, String, String) = ("Congratulations", "Good job! You found all the answers on time. Keep up with the great work.", "Play Again")
+        static let oneSecond: Double = 1
     }
     
     enum State: String {
@@ -49,15 +54,16 @@ class WordsViewModel {
         }
     }
     
-    @Published var timeRemaining: String? = "-:-"
-    @Published var wordsCount: String? = "-/-"
+    @Published var timeRemaining: String? = WordsViewModelConstants.initialTimeRemaining
+    @Published var wordsCount: String? = WordsViewModelConstants.initialWordsCount
     @Published var currentState: State = .start
     @Published var gameResult: GameResult? = nil
+    @Published var serviceError: ServiceError? = nil
     
     // MARK: - Properties
 
     var countdownTimer: Timer?
-    var totalTime: Int = Constants.totalTime
+    var totalTime: Int = WordsViewModelConstants.totalTime
     let service: QuizService
     
     // MARK: - Initializers
@@ -86,6 +92,7 @@ class WordsViewModel {
             case .success(let response):
                 self.quiz = response
             case .failure(let error):
+                self.serviceError = error
                 NSLog("Oops! There's an error: %@", error.message)
             }
         })
@@ -100,7 +107,7 @@ class WordsViewModel {
         if (quiz.words.contains(word) && !typedWords.contains(word)) {
             typedWords.append(word)
             if (typedWords.count == quiz.words.count) {
-                gameResult = ("Congratulations", "Good job! You found all the answers on time. Keep up with the great work.", "Play Again")
+                gameResult = WordsViewModelConstants.winnerMessage
             }
             return true
         }
@@ -135,16 +142,16 @@ class WordsViewModel {
     func resetTimer() {
         if let countdownTimer = countdownTimer {
             countdownTimer.invalidate()
-            totalTime = Constants.totalTime
-            timeRemaining = "00:00"
+            totalTime = WordsViewModelConstants.totalTime
+            timeRemaining = WordsViewModelConstants.zeroTimeRemaining
         }
     }
     
     /// Sets the total time constant to the counter and starts the timer countdown
     ///
     func startTimer() {
-        totalTime = Constants.totalTime
-        countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        totalTime = WordsViewModelConstants.totalTime
+        countdownTimer = Timer.scheduledTimer(timeInterval: WordsViewModelConstants.oneSecond, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
     
     /// Updates the total time property and the time remaning formatted string.
@@ -152,7 +159,7 @@ class WordsViewModel {
     @objc func updateTimer() {
         timeRemaining = totalTime.formattedTime
         if totalTime != 0 {
-            totalTime -= 1
+            totalTime -= Int(WordsViewModelConstants.oneSecond)
         } else {
             endTimer()
         }
